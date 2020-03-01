@@ -1,0 +1,50 @@
+---
+title: "Mtcars Model"
+author: "Nada Hossam Sharkawi"
+date: "3/1/2020"
+output: ioslides_presentation
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(datasets)
+```
+
+## Mtcars Data
+
+This R Markdown presentation is made to plot the density of mpg in mtcars data.
+
+## Data Datatypes
+
+```{r eruptions}
+str(mtcars)
+```
+
+## Data Summary
+
+```{r cars}
+summary(mtcars)
+```
+
+## Plot
+
+```{r}
+inputPanel(
+  selectInput("n_breaks", label = "Number of bins:",
+              choices = c(10, 20, 35, 50), selected = 20),
+  
+  sliderInput("bw_adjust", label = "Bandwidth adjustment:",
+              min = 0.2, max = 2, value = 1, step = 0.2)
+)
+
+renderPlot({
+  hist(mtcars$mpg, probability = TRUE, breaks = as.numeric(input$n_breaks),
+       xlab = "mpg", main = "Cars")
+  
+  dens <- density(mtcars$mpg, adjust = input$bw_adjust)
+  lines(dens, col = "blue")
+})
+```
+
+
